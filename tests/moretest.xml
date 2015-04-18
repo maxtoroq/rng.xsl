@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<testSuite>
+<documentation>Cases not covered by spectest.</documentation>
+<testSuite>
+<section>6</section>
+<testCase>
+<documentation>Optional (first) attribute</documentation>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+   <optional>
+      <attribute name="bar"/>
+   </optional>
+   <attribute name="baz"/>
+</element>
+</correct>
+<valid>
+<foo baz=""></foo>
+</valid>
+<valid>
+<foo bar="" baz=""></foo>
+</valid>
+</testCase>
+<testCase>
+<documentation>Optional (first) element</documentation>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+   <optional>
+      <element name="bar">
+         <empty/>
+      </element>
+   </optional>
+   <attribute name="baz"/>
+</element>
+</correct>
+<valid>
+<foo baz=""></foo>
+</valid>
+<valid>
+<foo baz=""><bar/></foo>
+</valid>
+</testCase>
+<testCase>
+<documentation>Text choice</documentation>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+   <choice>
+      <text/>
+      <element name="bar">
+         <empty/>
+      </element>
+   </choice>
+</element>
+</correct>
+<valid>
+<foo/>
+</valid>
+<valid>
+<foo> </foo>
+</valid>
+<valid>
+<foo>x</foo>
+</valid>
+<valid>
+<foo><bar/></foo>
+</valid>
+<valid>
+<foo>
+   <bar/>
+</foo>
+</valid>
+<invalid>
+<foo><baz/></foo>
+</invalid>
+<invalid>
+<foo>
+   <baz/>
+</foo>
+</invalid>
+<invalid>
+<foo>
+   <bar/>
+   x
+</foo>
+</invalid>
+</testCase>
+<testCase>
+<documentation>oneOrMore text</documentation>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+   <oneOrMore>
+      <text/>
+   </oneOrMore>
+</element>
+</correct>
+<valid>
+<foo>x</foo>
+</valid>
+<valid>
+<foo/>
+</valid>
+<valid>
+<foo> </foo>
+</valid>
+</testCase>
+<testCase>
+<documentation>Empty choice on interleave/group</documentation>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+   <interleave>
+      <group>
+         <choice>
+            <empty/>
+            <element name="bar">
+               <empty/>
+            </element>
+         </choice>
+         <element name="baz">
+            <empty/>
+         </element>
+      </group>
+      <text/>
+   </interleave>
+</element>
+</correct>
+<valid>
+<foo>
+   <bar/>
+   <baz/>
+</foo>
+</valid>
+<valid>
+<foo>
+   <baz/>
+</foo>
+</valid>
+</testCase>
+<testCase>
+<documentation>Non mutually exclusive choice in list</documentation>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+   <list>
+      <choice>
+         <value>x</value>
+         <group>
+            <value>x</value>
+            <value>y</value>
+         </group>
+      </choice>
+   </list>
+</element>
+</correct>
+<valid>
+<foo>x</foo>
+</valid>
+<valid>
+   <foo>x y</foo>
+</valid>
+</testCase>
+<testCase>
+<documentation>Non mutually exclusive choices</documentation>
+<correct>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+   <start>
+      <ref name="foo"/>
+   </start>
+   <define name="foo">
+      <element name="foo">
+         <choice>
+            <ref name="bar"/>
+            <group>
+               <ref name="bar"/>
+               <ref name="baz"/>
+            </group>
+         </choice>
+         <choice>
+            <ref name="baz"/>
+            <group>
+               <ref name="bar"/>
+               <ref name="baz"/>
+            </group>
+         </choice>
+      </element>
+   </define>
+   <define name="bar">
+      <element name="bar">
+         <empty/>
+      </element>
+   </define>
+   <define name="baz">
+      <element name="baz">
+         <empty/>
+      </element>
+   </define>
+</grammar>
+</correct>
+<valid>
+<foo>
+   <bar/>
+   <baz/>
+</foo>
+</valid>
+<valid>
+<foo>
+   <bar/>
+   <bar/>
+   <baz/>
+</foo>
+</valid>
+<valid>
+<foo>
+   <bar/>
+   <baz/>
+   <baz/>
+</foo>
+</valid>
+<valid>
+<foo>
+   <bar/>
+   <baz/>
+   <bar/>
+   <baz/>
+</foo>
+</valid>
+</testCase>
+</testSuite>
+<testSuite>
+<section>6</section>
+<testCase>
+<documentation>Empty value (token)</documentation>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+   <value/>
+</element>
+</correct>
+<valid>
+<foo></foo>
+</valid>
+<valid>
+<foo> </foo>
+</valid>
+</testCase>
+<testCase>
+<documentation>Empty value (token)</documentation>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+   <attribute name="bar"/>
+   <value/>
+</element>
+</correct>
+<valid>
+<foo bar=""></foo>
+</valid>
+<valid>
+<foo bar=""> </foo>
+</valid>
+</testCase>
+<testCase>
+<documentation>Empty value (string)</documentation>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+   <value type="string"/>
+</element>
+</correct>
+<valid>
+<foo></foo>
+</valid>
+<invalid>
+<foo> </foo>
+</invalid>
+</testCase>
+<testCase>
+<documentation>Empty value (string)</documentation>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+   <attribute name="bar"/>
+   <value type="string"/>
+</element>
+</correct>
+<valid>
+<foo bar=""></foo>
+</valid>
+<invalid>
+<foo bar=""> </foo>
+</invalid>
+</testCase>
+<testCase>
+<documentation>data (token)</documentation>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+   <data type="token"/>
+</element>
+</correct>
+<valid>
+<foo></foo>
+</valid>
+<valid>
+<foo> </foo>
+</valid>
+</testCase>
+<testCase>
+<documentation>data (token)</documentation>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+   <attribute name="bar"/>
+   <data type="token"/>
+</element>
+</correct>
+<valid>
+<foo bar=""></foo>
+</valid>
+<valid>
+<foo bar=""> </foo>
+</valid>
+</testCase>
+<testCase>
+<documentation>data (string)</documentation>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+   <data type="string"/>
+</element>
+</correct>
+<valid>
+<foo></foo>
+</valid>
+<valid>
+<foo> </foo>
+</valid>
+</testCase>
+<testCase>
+<documentation>data (string)</documentation>
+<correct>
+<element name="foo" xmlns="http://relaxng.org/ns/structure/1.0">
+   <attribute name="bar"/>
+   <data type="string"/>
+</element>
+</correct>
+<valid>
+<foo bar=""></foo>
+</valid>
+<valid>
+<foo bar=""> </foo>
+</valid>
+</testCase>
+</testSuite>
+<testSuite>
+<testCase>
+<documentation>QNames in text (data)</documentation>
+<correct>
+<element xmlns="http://relaxng.org/ns/structure/1.0" name="foo" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+   <element name="bar">
+      <data type="QName"/>
+   </element>
+   <element name="baz">
+      <data type="NCName"/>
+   </element>
+</element>
+</correct>
+<valid>
+<foo>
+   <bar>&#xA;&#xD; &#x9;string&#xA;&#xD; &#x9;</bar>
+   <baz>&#xA;&#xD; &#x9;string&#xA;&#xD; &#x9;</baz>
+</foo>
+</valid>
+</testCase>
+<testCase>
+<documentation>QNames in text (value)</documentation>
+<correct>
+<element xmlns="http://relaxng.org/ns/structure/1.0" name="foo" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+   <element name="bar">
+      <value type="QName">string</value>
+   </element>
+   <element name="baz">
+      <value type="NCName">string</value>
+   </element>
+</element>
+</correct>
+<valid>
+<foo>
+   <bar>&#xA;&#xD; &#x9;string&#xA;&#xD; &#x9;</bar>
+   <baz>&#xA;&#xD; &#x9;string&#xA;&#xD; &#x9;</baz>
+</foo>
+</valid>
+</testCase>
+<testCase>
+<documentation>QNames in attribute (data)</documentation>
+<correct>
+<element xmlns="http://relaxng.org/ns/structure/1.0" name="foo" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+   <attribute name="bar">
+      <data type="QName"/>
+   </attribute>
+   <attribute name="baz">
+      <data type="NCName"/>
+   </attribute>
+</element>
+</correct>
+<valid>
+<foo bar="&#xA;&#xD; &#x9;string&#xA;&#xD; &#x9;" baz="&#xA;&#xD; &#x9;string&#xA;&#xD; &#x9;"/>
+</valid>
+</testCase>
+<testCase>
+<documentation>QNames in attribute (value)</documentation>
+<correct>
+<element xmlns="http://relaxng.org/ns/structure/1.0" name="foo" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+   <attribute name="bar">
+      <value type="QName">string</value>
+   </attribute>
+   <attribute name="baz">
+      <value type="NCName">string</value>
+   </attribute>
+</element>
+</correct>
+<valid>
+<foo bar="&#xA;&#xD; &#x9;string&#xA;&#xD; &#x9;" baz="&#xA;&#xD; &#x9;string&#xA;&#xD; &#x9;"/>
+</valid>
+</testCase>
+</testSuite>
+</testSuite>
